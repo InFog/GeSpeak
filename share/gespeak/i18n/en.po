@@ -1,0 +1,72 @@
+#
+# GeSpeak Language File
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: GeSpeak 0.3\n"
+"POT-Creation-Date: 2009-03-08 18:54:17.692233\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: utf-8\n"
+"Generated-By: generate_pot.py\n"
+
+#. file 'GeSpeakWindow.py', line 37
+msgid "Pitch"
+msgstr "Pitch"
+
+#. file 'GeSpeakWindow.py', line 44
+msgid "Speed"
+msgstr "Speed"
+
+#. file 'GeSpeakWindow.py', line 51
+msgid "Language"
+msgstr "Language"
+
+#. file 'GeSpeakWindow.py', line 62
+msgid "Voice"
+msgstr "Voice"
+
+#. file 'GeSpeakWindow.py', line 77
+msgid "Stop"
+msgstr "Stop"
+
+#. file 'GeSpeakWindow.py', line 80
+msgid "Talk"
+msgstr "Talk"
+
+#. file 'GeSpeakWindow.py', line 116
+msgid "File"
+msgstr "File"
+
+#. file 'GeSpeakWindow.py', line 117
+#. file 'GeSpeakWindow.py', line 127
+#. file 'GeSpeakWindow.py', line 128
+msgid "About"
+msgstr "About"
+
+#. file 'GeSpeakWindow.py', line 119
+msgid "Open"
+msgstr "Open"
+
+#. file 'GeSpeakWindow.py', line 120
+msgid "Open a text file"
+msgstr "Open a text file"
+
+#. file 'GeSpeakWindow.py', line 123
+msgid "Quit"
+msgstr "Quit"
+
+#. file 'GeSpeakWindow.py', line 124
+msgid "Quit GeSpeak"
+msgstr "Quit GeSpeak"
+
+#. file 'GeSpeakWindow.py', line 184
+msgid "Select a text file to open"
+msgstr "Select a text file to open"
+
+#. file 'GeSpeakWindow.py', line 189
+msgid "Text files"
+msgstr "Text files"

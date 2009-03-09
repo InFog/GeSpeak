@@ -1,0 +1,18 @@
+[Desktop Entry]
+Name=Voice Synthesizer GeSpeak
+Name[en_GB]=Voice Synthesizer GeSpeak
+Name[pt]=Sintetizador de Voz GeSpeak
+Name[pt_BR]=Sintetizador de Voz GeSpeak
+GenericName=Music Player
+GenericName[en_GB]=Voice Synthesizer
+GenericName[pt]=Sintetizador de Voz
+GenericName[pt_BR]=Sintetizador de Voz
+Comment=A front end for eSpeak
+Comment[en_GB]=A front end for eSpeak
+Comment[pt]=Um front end para o eSpeak
+Comment[pt_BR]=Um front end para o eSpeak
+Exec=gespeak
+Terminal=false
+Type=Application
+Icon=gespeak
+Categories=GNOME;GTK;AudioVideo;
