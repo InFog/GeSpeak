@@ -25,7 +25,7 @@ class GeSpeak:
         """
             This is the constructor of the GeSpeak class
         """
-        self.version = "0.3 beta"
+        self.version = "0.3"
         self.espeak = "" # variable containing eSpeak's bin
         if self.pre_setup() == 0:
             self.load_prefs()
