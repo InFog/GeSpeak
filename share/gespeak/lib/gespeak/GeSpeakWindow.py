@@ -61,9 +61,11 @@ class GeSpeakWindow():
         # Voices
         self.lbl_voice = gtk.Label(_("Voice") + ": ")
         self.optbar2.pack_start(self.lbl_voice, expand=False, fill=False)
-        self.voice_male = gtk.RadioButton(group=None, label=_("Male"))
+        txt_male = _("Male")
+        self.voice_male = gtk.RadioButton(group=None, label=txt_male)
         self.optbar2.pack_start(self.voice_male, expand=False, fill=True)
-        self.voice_female = gtk.RadioButton(group=self.voice_male, label=_("Female"))
+        txt_female = _("Female")
+        self.voice_female = gtk.RadioButton(group=self.voice_male, label=txt_female)
         self.optbar2.pack_start(self.voice_female, expand=False, fill=True)
         # Ending optbar2
         # Starting the TextView area
@@ -98,6 +100,10 @@ class GeSpeakWindow():
         self.window.set_border_width(4)
         self.window.set_size_request(500,300)
         self.window.set_position(gtk.WIN_POS_CENTER)
+
+        # Setting window's icon
+        icon = gtk.gdk.pixbuf_new_from_file("../../../icons/gespeak.png")
+        self.window.set_icon(icon)
 
         # Showing everything
         self.window.show_all()

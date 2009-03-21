@@ -67,14 +67,14 @@ class GeSpeak:
         """
         self.__pitch = 30 # Variables starting with __ are "private"
         self.__speed = 70
-        self.__language = "English"
+        self.__language = "en-us"
         self.__voice = "Male"
         gespeak_dir = os.environ["HOME"] + "/.gespeak"
         if (os.path.exists(gespeak_dir) == False) :
             os.mkdir(gespeak_dir)
         gespeak_conf_file = gespeak_dir + "/gespeak.conf"
-        #if (os.path.exists(gespeak_conf_file) == False) :
-            # Default options...
+        if (os.path.exists(gespeak_conf_file) == False) :
+            conf_file = open(gespeak_conf_file, 'w')
 
     def load_langs(self):
         """
