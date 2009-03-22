@@ -2,6 +2,7 @@ import sys
 import os
 import commands
 import string
+import ConfigParser
 
 __doc__ = """
     This is the main module of GeSpeak
@@ -37,6 +38,14 @@ class GeSpeak:
         """
             This function saves the preferences file and terminates GeSpeak
         """
+        conf_file = open(self.__gespeak_conf_file, 'w')
+        conf_text = []
+        conf_text.append("[gespeak]\n")
+        conf_text.append("pitch = %i\n" % self.__pitch)
+        conf_text.append("speed = %i\n" % self.__speed)
+        conf_text.append("language = %s\n" % self.__language)
+        conf_file.writelines(conf_text)
+        conf_file.close()
 
     def pre_setup(self):
         """
@@ -72,9 +81,22 @@ class GeSpeak:
         gespeak_dir = os.environ["HOME"] + "/.gespeak"
         if (os.path.exists(gespeak_dir) == False) :
             os.mkdir(gespeak_dir)
-        gespeak_conf_file = gespeak_dir + "/gespeak.conf"
-        if (os.path.exists(gespeak_conf_file) == False) :
-            conf_file = open(gespeak_conf_file, 'w')
+        self.__gespeak_conf_file = gespeak_dir + "/gespeak.conf"
+        if (os.path.exists(self.__gespeak_conf_file) == False) :
+            conf_file = open(self.__gespeak_conf_file, 'w')
+            conf_text = []
+            conf_text.append("[gespeak]\n")
+            conf_text.append("pitch = 30\n")
+            conf_text.append("speed = 70\n")
+            conf_text.append("language = en-us\n")
+            conf_file.writelines(conf_text)
+            conf_file.close()
+        else:
+            conf_file = ConfigParser.ConfigParser()
+            conf_file.read(self.__gespeak_conf_file)
+            self.__pitch = int(conf_file.get("gespeak", "pitch"))
+            self.__speed = int(conf_file.get("gespeak", "speed"))
+            self.__language = conf_file.get("gespeak", "language")
 
     def load_langs(self):
         """

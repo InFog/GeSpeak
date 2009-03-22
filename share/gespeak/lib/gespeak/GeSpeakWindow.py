@@ -51,9 +51,13 @@ class GeSpeakWindow():
         self.lbl_language = gtk.Label(_("Language"))
         self.optbar1.pack_start(self.lbl_language, expand=True, fill=True)
         self.cbox_language = gtk.combo_box_new_text()
+        i = 0
         for language in self.gespeak.get_languages_list():
             self.cbox_language.append_text(language)
-        self.cbox_language.set_active(0)
+            if language == self.gespeak.get_language():
+                active_language = i
+            i += 1
+        self.cbox_language.set_active(active_language)
         self.optbar1.pack_start(self.cbox_language, expand=True, fill=True)
         # Ending optbar1
         # Startin optbar2 

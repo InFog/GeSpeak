@@ -7,5 +7,5 @@ Version 0.3
 Version 0.4
 
     * Issue 13 solved, An icon was added to the window.
-    * Issue 12 solved.
-
+    * Issue 12 solved, it was a translation problem.
+    * Issue 14 and 16 solved, now GeSpeak can 'remember' some options.
