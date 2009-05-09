@@ -26,7 +26,7 @@ class GeSpeak:
         """
             This is the constructor of the GeSpeak class
         """
-        self.version = "0.3"
+        self.version = "0.4"
         self.espeak = "" # variable containing eSpeak's bin
         if self.pre_setup() == 0:
             self.load_prefs()
@@ -41,6 +41,7 @@ class GeSpeak:
         conf_file = open(self.__gespeak_conf_file, 'w')
         conf_text = []
         conf_text.append("[gespeak]\n")
+        conf_text.append("amplitude = %i\n" % self.__amplitude)
         conf_text.append("pitch = %i\n" % self.__pitch)
         conf_text.append("speed = %i\n" % self.__speed)
         conf_text.append("language = %s\n" % self.__language)
@@ -74,7 +75,8 @@ class GeSpeak:
 
             If the preferences file don't exists it will be created
         """
-        self.__pitch = 30 # Variables starting with __ are "private"
+        self.__amplitude = 10
+        self.__pitch = 30
         self.__speed = 70
         self.__language = "en-us"
         self.__voice = "Male"
@@ -86,6 +88,7 @@ class GeSpeak:
             conf_file = open(self.__gespeak_conf_file, 'w')
             conf_text = []
             conf_text.append("[gespeak]\n")
+            conf_text.append("amplitude = 10\n")
             conf_text.append("pitch = 30\n")
             conf_text.append("speed = 70\n")
             conf_text.append("language = en-us\n")
@@ -94,6 +97,7 @@ class GeSpeak:
         else:
             conf_file = ConfigParser.ConfigParser()
             conf_file.read(self.__gespeak_conf_file)
+            self.__amplitude = int(conf_file.get("gespeak", "amplitude"))
             self.__pitch = int(conf_file.get("gespeak", "pitch"))
             self.__speed = int(conf_file.get("gespeak", "speed"))
             self.__language = conf_file.get("gespeak", "language")
@@ -120,6 +124,23 @@ class GeSpeak:
         """
         return self.__languages_list
     
+    def set_amplitude(self, amplitude):
+        """
+            This function sets the amplitude
+
+            Params
+                Amplitude must be an integer betwwn 1 and 20
+        """
+        if amplitude > 0 and amplitude <= 20 :
+            self.__amplitude = amplitude
+
+    def get_amplitude(self):
+        """
+            This function just returns the amplitude
+            an integer number
+        """
+        return self.__amplitude
+
     def set_pitch(self, pitch):
         """
            this function sets the pitch
@@ -132,7 +153,7 @@ class GeSpeak:
 
     def get_pitch(self):
         """
-            This function just gets the pitch
+            This function just returns the pitch
             an integer number
         """
         return self.__pitch
@@ -210,6 +231,7 @@ class GeSpeak:
         speak_this.write(text)
         speak_this.close()
         espeak_command = self.espeak
+        espeak_command += " -a " + str(self.__amplitude)
         espeak_command += " -v " + self.__language + self.__voice
         espeak_command += " -s " + str(self.__speed)
         espeak_command += " -p " + str(self.__pitch)

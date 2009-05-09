@@ -6,6 +6,8 @@ import gobject
 import string
 import os
 import gettext
+from os.path import abspath, dirname, join, pardir
+
 
 import __builtin__
 __builtin__._ = gettext.gettext
@@ -33,6 +35,13 @@ class GeSpeakWindow():
         # Creating window's elements
         self.optbar1 = gtk.HBox() # The box that contais pitch, speed and language
         # Starting items of optbar1
+        # Amplitude in optbar1
+        self.lbl_amplitude = gtk.Label(_("Amplitude"))
+        self.optbar1.pack_start(self.lbl_amplitude, expand=True, fill=True)
+        self.adj_amplitude = gtk.Adjustment(self.gespeak.get_amplitude(), 1.0, 20.0, 1.0, 2.0, 0.0)
+        self.spin_amplitude = gtk.SpinButton(adjustment=self.adj_amplitude, climb_rate=0.0, digits=0)
+        self.spin_amplitude.set_range(1, 20)
+        self.optbar1.pack_start(self.spin_amplitude, expand=True, fill=True)
         # Pitch in optbar1
         self.lbl_pitch = gtk.Label(_("Pitch"))
         self.optbar1.pack_start(self.lbl_pitch, expand=True, fill=True)
@@ -106,7 +115,8 @@ class GeSpeakWindow():
         self.window.set_position(gtk.WIN_POS_CENTER)
 
         # Setting window's icon
-        icon = gtk.gdk.pixbuf_new_from_file("../../../icons/gespeak.png")
+        ICON_PATH = abspath(join(dirname(__file__), pardir, pardir, pardir, 'icons', 'gespeak.png'))
+        icon = gtk.gdk.pixbuf_new_from_file(ICON_PATH)
         self.window.set_icon(icon)
 
         # Showing everything
@@ -166,6 +176,7 @@ class GeSpeakWindow():
             This function calls GeSpeak.talk()
         """
         # Setting parameters
+        self.gespeak.set_amplitude(amplitude=self.spin_amplitude.get_value())
         self.gespeak.set_pitch(pitch=self.spin_pitch.get_value())
         self.gespeak.set_speed(speed=self.spin_speed.get_value())
         self.gespeak.set_language(language=self.cbox_language.get_active_text())
