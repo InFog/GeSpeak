@@ -69,18 +69,23 @@ class GeSpeakWindow():
         self.cbox_language.set_active(active_language)
         self.optbar1.pack_start(self.cbox_language, expand=True, fill=True)
         # Ending optbar1
-        # Startin optbar2 
+        # Starting optbar2 (Male and Female Voices)
         self.optbar2 = gtk.HBox() # This box contains only the voice (male or female)
         # Voices
         self.lbl_voice = gtk.Label(_("Voice") + ": ")
         self.optbar2.pack_start(self.lbl_voice, expand=False, fill=False)
         txt_male = _("Male")
-        self.voice_male = gtk.RadioButton(group=None, label=txt_male)
-        self.optbar2.pack_start(self.voice_male, expand=False, fill=True)
+        self.rbutton_voice_male = gtk.RadioButton(group=None, label=txt_male)
+        self.optbar2.pack_start(self.rbutton_voice_male, expand=False, fill=True)
         txt_female = _("Female")
-        self.voice_female = gtk.RadioButton(group=self.voice_male, label=txt_female)
-        self.optbar2.pack_start(self.voice_female, expand=False, fill=True)
+        self.rbutton_voice_female = gtk.RadioButton(group=self.rbutton_voice_male, label=txt_female)
+        self.optbar2.pack_start(self.rbutton_voice_female, expand=False, fill=True)
         # Ending optbar2
+        # Starting optbar3 (wav file)
+        self.optbar3 = gtk.HBox()
+        txt_wav_file = _("Write output to WAV file.")
+        self.cbutton_wav_file = gtk.CheckButton(label=txt_wav_file)
+        self.optbar3.pack_start(self.cbutton_wav_file, expand=False, fill=True)
         # Starting the TextView area
         self.text_area = gtk.HBox()
         self.text_buffer = gtk.TextBuffer()
@@ -100,6 +105,7 @@ class GeSpeakWindow():
         self.main_vbox.pack_start(self.menubar, expand=False, fill=True)
         self.main_vbox.pack_start(self.optbar1, expand=False, fill=True)
         self.main_vbox.pack_start(self.optbar2, expand=False, fill=True)
+        self.main_vbox.pack_start(self.optbar3, expand=False, fill=True)
         self.main_vbox.pack_start(self.text_area, expand=True, fill=True)
         self.main_vbox.pack_start(self.button_bar, expand=False, fill=False)
 
@@ -180,7 +186,7 @@ class GeSpeakWindow():
         self.gespeak.set_pitch(pitch=self.spin_pitch.get_value())
         self.gespeak.set_speed(speed=self.spin_speed.get_value())
         self.gespeak.set_language(language=self.cbox_language.get_active_text())
-        if self.voice_male.get_active() == True :
+        if self.rbutton_voice_male.get_active() == True :
             self.gespeak.set_voice(voice="")
         else:
             self.gespeak.set_voice(voice="+12")

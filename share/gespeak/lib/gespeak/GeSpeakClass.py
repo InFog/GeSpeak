@@ -80,6 +80,7 @@ class GeSpeak:
         self.__speed = 70
         self.__language = "en-us"
         self.__voice = "Male"
+        self.__wavfile = ""
         gespeak_dir = os.environ["HOME"] + "/.gespeak"
         if (os.path.exists(gespeak_dir) == False) :
             os.mkdir(gespeak_dir)
@@ -213,7 +214,13 @@ class GeSpeak:
         """
         return self.__voice
 
-    def talk(self, text):
+    def set_wav_file(self, wavfile):
+        """
+            This function sets the wav file to write output rather than speaking it directly
+        """
+        self.__wavfile = wavfile
+
+    def talk(self, text, wav=0):
         """
             This function is called to run espeak with the parameters from UI
 
@@ -231,6 +238,8 @@ class GeSpeak:
         speak_this.write(text)
         speak_this.close()
         espeak_command = self.espeak
+        if (wav == 1):
+            espeak_command += " -w " + self.__wavfile
         espeak_command += " -a " + str(self.__amplitude)
         espeak_command += " -v " + self.__language + self.__voice
         espeak_command += " -s " + str(self.__speed)
