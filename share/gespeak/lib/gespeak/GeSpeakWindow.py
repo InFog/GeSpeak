@@ -27,6 +27,8 @@ class GeSpeakWindow():
         """
         # Creating GeSpeak's object
         self.gespeak = GeSpeak()
+        # The file to write eSpeak's output
+        self.wav_file = ""
         # Creating window
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
         self.main_vbox = gtk.VBox() # The main vertical box.
@@ -86,6 +88,8 @@ class GeSpeakWindow():
         txt_wav_file = _("Write output to WAV file.")
         self.cbutton_wav_file = gtk.CheckButton(label=txt_wav_file)
         self.optbar3.pack_start(self.cbutton_wav_file, expand=False, fill=True)
+        self.lbl_wav_filename = gtk.Label("")
+        self.optbar3.pack_start(self.lbl_wav_filename, expand=False, fill=True)
         # Starting the TextView area
         self.text_area = gtk.HBox()
         self.text_buffer = gtk.TextBuffer()
@@ -100,6 +104,9 @@ class GeSpeakWindow():
         self.btn_talk = gtk.Button(_("Talk"))
         self.button_bar.pack_start(self.btn_talk, expand=True, fill=True)
 
+        self.btn_write = gtk.Button(_("Write to file"))
+        self.button_bar.pack_start(self.btn_write, expand=True, fill=True)
+
         # Adding elements to window
         self.window.add(self.main_vbox)
         self.main_vbox.pack_start(self.menubar, expand=False, fill=True)
@@ -111,8 +118,10 @@ class GeSpeakWindow():
 
         # Connecting signals
         self.window.connect("destroy", self.close)
+        self.cbutton_wav_file.connect("clicked", self.choose_wav_file)
         self.btn_talk.connect("clicked", self.talk)
         self.btn_stop.connect("clicked", self.stop)
+        self.btn_write.connect("clicked", self.write_wav)
 
         # Setting window properties
         self.window.set_title("GeSpeak " + self.gespeak.version)
@@ -127,6 +136,9 @@ class GeSpeakWindow():
 
         # Showing everything
         self.window.show_all()
+
+        # Hiding the write button
+        self.btn_write.hide()
 
     def main(self):
         """
@@ -177,11 +189,49 @@ class GeSpeakWindow():
             print("building menus failed: %s" % msg)
         return ui.get_widget("/MenuBar")
 
-    def talk(self, widget):
+    def choose_wav_file(self, widget):
         """
-            This function calls GeSpeak.talk()
+            This function is called when the CheckButton "write output to wav file" is clicked.
+
+            If this CheckButton is enabled a gtk openfile dialog is used to choose the file to write
+            and the Talk and Stop buttons are hidden to show a "Write" button.
         """
-        # Setting parameters
+        if self.cbutton_wav_file.get_active() == True :
+            title_open_wav_file_dialog = _("Select a wav file to write")
+            write_wav_file = gtk.FileChooserDialog(title=title_open_wav_file_dialog,
+                parent=self.window, action=gtk.FILE_CHOOSER_ACTION_OPEN,
+                buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK),
+                backend=None)
+            filter = gtk.FileFilter()
+            filter.set_name(_("WAV files"))
+            filter.add_pattern("*.wav")
+            write_wav_file.add_filter(filter)
+            response = write_wav_file.run()
+            if response == gtk.RESPONSE_OK :
+                self.wav_file = write_wav_file.get_filename()
+                self.lbl_wav_filename.set_label(self.wav_file)
+                self.btn_talk.hide()
+                self.btn_stop.hide()
+                self.btn_write.show()
+            else :
+                self.wav_file = ""
+                self.lbl_wav_filename.set_label("")
+                self.btn_talk.show()
+                self.btn_stop.show()
+                self.btn_write.hide()
+                self.cbutton_wav_file.set_active(False)
+            write_wav_file.destroy()
+        else :
+            self.lbl_wav_filename.set_label("")
+            self.btn_talk.show()
+            self.btn_stop.show()
+            self.btn_write.hide()
+
+    def set_all_params(self):
+        """
+            This function set all the parameters for eSpeak from GeSpeak's interface and
+            returns the text to speak.
+        """
         self.gespeak.set_amplitude(amplitude=self.spin_amplitude.get_value())
         self.gespeak.set_pitch(pitch=self.spin_pitch.get_value())
         self.gespeak.set_speed(speed=self.spin_speed.get_value())
@@ -196,7 +246,29 @@ class GeSpeakWindow():
             text=self.text_buffer.get_text(selection[0],selection[1])
         else :
             text=self.text_buffer.get_text(self.text_buffer.get_start_iter(), self.text_buffer.get_end_iter())
+        return text
+
+    def talk(self, widget):
+        """
+            This function calls GeSpeak.talk()
+        """
+        # Setting parameters
+        text = self.set_all_params()
         self.gespeak.talk(text=text)
+
+    def write_wav(self, widget):
+        """
+            This function is used to write the eSpeak's output to a wav file
+        """
+        text = self.set_all_params()
+        self.gespeak.set_wav_file(wav_file=self.wav_file)
+        self.gespeak.write_wav_file(text=text)
+        done_message = _("The output was written to '%s'") % self.wav_file
+        done_dialog = gtk.MessageDialog(self.window,
+            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+            gtk.MESSAGE_INFO, gtk.BUTTONS_OK, done_message)
+        done_dialog.run()
+        done_dialog.destroy()
 
     def stop(self, widget):
         """
@@ -208,7 +280,8 @@ class GeSpeakWindow():
         """
             this function opens a text file
         """
-        open_file = gtk.FileChooserDialog(title=_("Select a text file to open"),
+        title_open_text_file_dialog = "Select a text file to open"
+        open_file = gtk.FileChooserDialog(title=title_open_text_file_dialog,
             parent=self.window, action=gtk.FILE_CHOOSER_ACTION_OPEN,
             buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK),
             backend=None)

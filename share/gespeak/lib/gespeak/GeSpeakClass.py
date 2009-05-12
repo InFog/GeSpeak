@@ -214,11 +214,17 @@ class GeSpeak:
         """
         return self.__voice
 
-    def set_wav_file(self, wavfile):
+    def set_wav_file(self, wav_file):
         """
             This function sets the wav file to write output rather than speaking it directly
         """
-        self.__wavfile = wavfile
+        self.__wavfile = wav_file
+
+    def write_wav_file(self, text):
+        """
+            This function calls to the talk function with the option to write a wav file
+        """
+        self.talk(text=text, wav=1)
 
     def talk(self, text, wav=0):
         """
