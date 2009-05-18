@@ -6,7 +6,7 @@ import gobject
 import string
 import os
 import gettext
-from os.path import abspath, dirname, join, pardir
+from os.path import abspath, dirname, join, pardir, exists
 
 
 import __builtin__
@@ -189,6 +189,23 @@ class GeSpeakWindow():
             print("building menus failed: %s" % msg)
         return ui.get_widget("/MenuBar")
 
+    def change_output_mod(self, mod=0, file=''):
+        """
+            This function is used to change GeSpeak's output.
+            
+            Available mods are:
+            0 : Normal speaking to sound device
+            1 : Write output to a WAV file
+
+            'file' must be a path to a WAV file
+        """
+        if mod == 0 :
+            self.lbl_wav_filename.set_label("")
+            self.btn_talk.show()
+            self.btn_stop.show()
+            self.btn_write.hide()
+
+
     def choose_wav_file(self, widget):
         """
             This function is called when the CheckButton "write output to wav file" is clicked.
@@ -198,34 +215,37 @@ class GeSpeakWindow():
         """
         if self.cbutton_wav_file.get_active() == True :
             title_open_wav_file_dialog = _("Select a wav file to write")
-            write_wav_file = gtk.FileChooserDialog(title=title_open_wav_file_dialog,
+            dialog_write_wav_file = gtk.FileChooserDialog(title=title_open_wav_file_dialog,
                 parent=self.window, action=gtk.FILE_CHOOSER_ACTION_OPEN,
                 buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK),
                 backend=None)
             filter = gtk.FileFilter()
             filter.set_name(_("WAV files"))
             filter.add_pattern("*.wav")
-            write_wav_file.add_filter(filter)
-            response = write_wav_file.run()
+            dialog_write_wav_file.add_filter(filter)
+            response = dialog_write_wav_file.run()
             if response == gtk.RESPONSE_OK :
-                self.wav_file = write_wav_file.get_filename()
-                self.lbl_wav_filename.set_label(self.wav_file)
-                self.btn_talk.hide()
-                self.btn_stop.hide()
-                self.btn_write.show()
+                self.wav_file = dialog_write_wav_file.get_filename()
+                # Checking if file exists...
+                if exists(self.wav_file) :
+                    exists_message = _("The choosen file already exists, overwrite it?")
+                    dialog_exists = gtk.Dialog(_("File overwrite"), self.window, 0,
+                        (gtk.STOCK_OK, gtk.RESPONSE_OK,
+                        gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL), exists_message)
+                    response_overwrite_file = dialog_exists.run()
+                    if response_overwrite_file == gtk.RESPONSE_OK :
+                        self.change_output_mod(mod=1, file=self.wav_file)
+                    else :
+                        self.change_output_mod(mod=0)
+                else :
+                    self.change_output_mod(mod=0)
             else :
                 self.wav_file = ""
-                self.lbl_wav_filename.set_label("")
-                self.btn_talk.show()
-                self.btn_stop.show()
-                self.btn_write.hide()
+                self.change_output_mod(mod=0)
                 self.cbutton_wav_file.set_active(False)
-            write_wav_file.destroy()
+            dialog_write_wav_file.destroy()
         else :
-            self.lbl_wav_filename.set_label("")
-            self.btn_talk.show()
-            self.btn_stop.show()
-            self.btn_write.hide()
+            self.change_output_mod(mod=0)
 
     def set_all_params(self):
         """
