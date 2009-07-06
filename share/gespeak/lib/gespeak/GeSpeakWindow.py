@@ -95,6 +95,9 @@ class GeSpeakWindow():
         self.text_buffer = gtk.TextBuffer()
         self.text = gtk.TextView(buffer=self.text_buffer)
         self.text_area.pack_start(self.text, expand=True, fill=True)
+        hscroll = gtk.HScrollbar(adjustment=None)
+        vscroll = gtk.VScrollbar(adjustment=None)
+        self.text_area.set_scroll_adjustments(None, None)
         # Ending the TextView area
         #Starting the buttons bar
         self.button_bar = gtk.HBox()
@@ -106,15 +109,20 @@ class GeSpeakWindow():
 
         self.btn_write = gtk.Button(_("Write to file"))
         self.button_bar.pack_start(self.btn_write, expand=True, fill=True)
+        
+        # This VBox is just for visual effect
+        self.body_vbox = gtk.VBox()
+        self.body_vbox.set_border_width(4)
 
         # Adding elements to window
         self.window.add(self.main_vbox)
         self.main_vbox.pack_start(self.menubar, expand=False, fill=True)
-        self.main_vbox.pack_start(self.optbar1, expand=False, fill=True)
-        self.main_vbox.pack_start(self.optbar2, expand=False, fill=True)
-        self.main_vbox.pack_start(self.optbar3, expand=False, fill=True)
-        self.main_vbox.pack_start(self.text_area, expand=True, fill=True)
-        self.main_vbox.pack_start(self.button_bar, expand=False, fill=False)
+        self.main_vbox.pack_start(self.body_vbox, expand=True, fill=True)
+        self.body_vbox.pack_start(self.optbar1, expand=False, fill=True)
+        self.body_vbox.pack_start(self.optbar2, expand=False, fill=True)
+        self.body_vbox.pack_start(self.optbar3, expand=False, fill=True)
+        self.body_vbox.pack_start(self.text_area, expand=True, fill=True)
+        self.body_vbox.pack_start(self.button_bar, expand=False, fill=False)
 
         # Connecting signals
         self.window.connect("destroy", self.close)
@@ -125,7 +133,7 @@ class GeSpeakWindow():
 
         # Setting window properties
         self.window.set_title("GeSpeak " + self.gespeak.version)
-        self.window.set_border_width(4)
+        self.window.set_border_width(0)
         self.window.set_size_request(500,300)
         self.window.set_position(gtk.WIN_POS_CENTER)
 
@@ -204,6 +212,11 @@ class GeSpeakWindow():
             self.btn_talk.show()
             self.btn_stop.show()
             self.btn_write.hide()
+        else :
+            self.lbl_wav_filename.set_label(self.wav_file)
+            self.btn_talk.hide()
+            self.btn_stop.hide()
+            self.btn_write.show()
 
 
     def choose_wav_file(self, widget):
@@ -216,7 +229,7 @@ class GeSpeakWindow():
         if self.cbutton_wav_file.get_active() == True :
             title_open_wav_file_dialog = _("Select a wav file to write")
             dialog_write_wav_file = gtk.FileChooserDialog(title=title_open_wav_file_dialog,
-                parent=self.window, action=gtk.FILE_CHOOSER_ACTION_OPEN,
+                parent=self.window, action=gtk.FILE_CHOOSER_ACTION_SAVE,
                 buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK),
                 backend=None)
             filter = gtk.FileFilter()
@@ -238,7 +251,7 @@ class GeSpeakWindow():
                     else :
                         self.change_output_mod(mod=0)
                 else :
-                    self.change_output_mod(mod=0)
+                    self.change_output_mod(mod=1)
             else :
                 self.wav_file = ""
                 self.change_output_mod(mod=0)
@@ -330,7 +343,7 @@ class GeSpeakWindow():
         about.set_license("GPL v3 http://www.gnu.org/licenses/gpl-3.0.txt")
         about.set_website("http://gespeak.googlecode.com")
         about.set_website_label("http://gespeak.googlecode.com")
-        about.set_authors(['Evaldo Junior (InFog)',"Walter Cruz"])
+        about.set_authors([ _('GeSpeak Team'), '- Evaldo Junior (InFog)', '- Walter Cruz'])
         about.connect("response", lambda d, r: d.destroy())
         about.show_all()
 

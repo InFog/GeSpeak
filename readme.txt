@@ -7,6 +7,8 @@ It is developed in Python and GTK using PyGTK.
 * Version 0.4
 - Added the amplitude option
 - Added the GeSpeak icon to the main window
+- Added the option to save the output to a WAV file.
+- Changed some visual options.
 
 * Version 0.3
 - New implementation in Python! (Bye bye C++)
