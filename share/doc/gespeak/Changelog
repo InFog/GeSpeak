@@ -4,8 +4,9 @@ Version 0.3
     * Interface is internationalized.
     * Check all languages eSpeak supports.
 
-Version 0.4
+Version 0.4b
 
     * Issue 13 solved, An icon was added to the window.
     * Issue 12 solved, it was a translation problem.
     * Issue 14 and 16 solved, now GeSpeak can 'remember' some options.
+    * Added an option to save output to a wav file.

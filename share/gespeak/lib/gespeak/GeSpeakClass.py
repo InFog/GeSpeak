@@ -26,7 +26,7 @@ class GeSpeak:
         """
             This is the constructor of the GeSpeak class
         """
-        self.version = "0.4"
+        self.version = "0.4b"
         self.espeak = "" # variable containing eSpeak's bin
         if self.pre_setup() == 0:
             self.load_prefs()
@@ -124,7 +124,7 @@ class GeSpeak:
             This functios return a list of languages supported by espeak
         """
         return self.__languages_list
-    
+
     def set_amplitude(self, amplitude):
         """
             This function sets the amplitude
@@ -145,7 +145,7 @@ class GeSpeak:
     def set_pitch(self, pitch):
         """
            this function sets the pitch
-           
+
            Params
                Pitch must be an integer between 1 and 99
         """
@@ -162,7 +162,7 @@ class GeSpeak:
     def set_speed(self, speed):
         """
             this function sets the speed
-            
+
             Params
                 Speed must be an integer between 30 and 200
         """
@@ -181,10 +181,10 @@ class GeSpeak:
             This functions sets the language
             Language must be a string in a format supported by espeak
 
-            Examples:            
+            Examples:
             en  English
             pt  Portuguese
-            
+
             For more information see espeak's manual
         """
         self.__language = language
@@ -198,12 +198,12 @@ class GeSpeak:
     def set_voice(self, voice):
         """
             This function sets the voice
-            
+
             Params
                 An empty string for male
-                
+
                 "+12" for female
-            
+
             Only some languages supports female voice
         """
         self.__voice = voice
@@ -232,7 +232,7 @@ class GeSpeak:
 
             Params
                 text = The text you want espeak to "talk"
-            
+
             Usage:
                 talk("Text to talk")
 
