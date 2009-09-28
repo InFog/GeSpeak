@@ -1,3 +1,25 @@
+#       GeSpeakClass.py
+#
+#       This file is part of the GeSpeak project
+#       http://gespeak.googlecode.com
+#
+#       Copyright 2009 Evaldo Junior (InFog) <junior@casoft.info>
+#
+#       This program is free software; you can redistribute it and/or modify
+#       it under the terms of the GNU General Public License as published by
+#       the Free Software Foundation; either version 3 of the License, or
+#       (at your option) any later version.
+#
+#       This program is distributed in the hope that it will be useful,
+#       but WITHOUT ANY WARRANTY; without even the implied warranty of
+#       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#       GNU General Public License for more details.
+#
+#       You should have received a copy of the GNU General Public License
+#       along with this program; if not, write to the Free Software
+#       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#       MA 02110-1301, USA.
+
 import sys
 import os
 import commands
@@ -26,7 +48,7 @@ class GeSpeak:
         """
             This is the constructor of the GeSpeak class
         """
-        self.version = "0.4b"
+        self.version = "0.4b2"
         self.espeak = "" # variable containing eSpeak's bin
         if self.pre_setup() == 0:
             self.load_prefs()
@@ -105,25 +127,36 @@ class GeSpeak:
 
     def load_langs(self):
         """
-            This function gets the languages that espeak support
+            This function gets the languages that espeak supports
+            by reading files and directories under /usr/share/espeak-data/voices
+        """
+        self.__languages_names = []
+        languages_files_or_dirs = os.listdir('/usr/share/espeak-data/voices')
+        for file_or_dir in languages_files_or_dirs :
+            if file_or_dir != '!v' and file_or_dir != 'mb' :
+                if os.path.isfile('/usr/share/espeak-data/voices/%s' % file_or_dir) :
+                    self.load_language_from_file(lang_file='/usr/share/espeak-data/voices/%s' % file_or_dir)
+                else :
+                    languages_sub_files_or_dirs = os.listdir('/usr/share/espeak-data/voices/%s' % file_or_dir)
+                    for sub_file_or_dir in languages_sub_files_or_dirs :
+                        if os.path.isfile('/usr/share/espeak-data/voices/%s/%s' % (file_or_dir,sub_file_or_dir)) :
+                            self.load_language_from_file(lang_file='/usr/share/espeak-data/voices/%s/%s' % (file_or_dir,sub_file_or_dir))
 
-            It need some adjusts... A good one is to make languages names more
-            human readable...
-        """
-        self.__languages_list = []
-        commands.getoutput("espeak --voices | grep -v \"VoiceName\" | cut -f 4 -d \ > /tmp/es_voices")
-        es_voices = open("/tmp/es_voices")
-        for voice in es_voices:
-            voice = voice.replace("\n", "") # replacing newlines...
-            self.__languages_list.append(voice)
-        es_voices.close()
-        commands.getoutput("rm /tmp/es_voices")
+    def load_language_from_file(self, lang_file):
+        lfile = open(lang_file, 'r')
+        name_ok = False
+        for line in lfile:
+            if name_ok == False:
+                if line.find('name ') != -1 :
+                    name_ok = True
+                    self.__languages_names.append(line.split(' ')[1].split('\n')[0])
+        lfile.close()
 
-    def get_languages_list(self):
+    def get_languages_names(self):
         """
-            This functios return a list of languages supported by espeak
+            This functios return a list of languages names supported by espeak
         """
-        return self.__languages_list
+        return self.__languages_names
 
     def set_amplitude(self, amplitude):
         """
@@ -239,6 +272,8 @@ class GeSpeak:
             Make sure you have set up all parameters before calling this
             function
         """
+        if text == '==please, tell me a story==' :
+            text = self.tell_a_story()
         speak_this = open("/tmp/speak_this", "w")
         text = str(text)
         speak_this.write(text)
@@ -258,3 +293,22 @@ class GeSpeak:
             This function stops espeak from talking
         """
         os.system("killall espeak > /dev/null &")
+
+    def tell_a_story(self):
+        story = """
+            Once time ago, in a seaside city,
+            lived a little girl who loved to play with her parrot.
+            And what a nice parrot it was.
+            She used to sing to the parrot, and he, to yell,
+            so happy was the parrot, because other people
+            didn't like him, but she liked.
+            The parrot really enjoyed the time with the girl.
+            And then the girl grew up and got a boyfriend.
+            The parrot became a little jealous,
+            but the girl always had time to play and sing with him.
+            Some years later the girl got married and left home.
+            The parrot was alone, the girl didn't take the parrot
+            to her new home.
+            The parrot was alone, he didn't sing anymore, he didn't yell anymore...
+        """
+        return story

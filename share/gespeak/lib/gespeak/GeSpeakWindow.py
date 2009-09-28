@@ -1,4 +1,25 @@
 # -*- coding: utf-8 -*-
+#       GeSpeakWindow.py
+#
+#       This file is part of the GeSpeak project
+#       http://gespeak.googlecode.com
+#
+#       Copyright 2009 Evaldo Junior (InFog) <junior@casoft.info>
+#
+#       This program is free software; you can redistribute it and/or modify
+#       it under the terms of the GNU General Public License as published by
+#       the Free Software Foundation; either version 2 of the License, or
+#       (at your option) any later version.
+#
+#       This program is distributed in the hope that it will be useful,
+#       but WITHOUT ANY WARRANTY; without even the implied warranty of
+#       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#       GNU General Public License for more details.
+#
+#       You should have received a copy of the GNU General Public License
+#       along with this program; if not, write to the Free Software
+#       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#       MA 02110-1301, USA.
 import pygtk
 pygtk.require('2.0')
 import gtk
@@ -62,8 +83,9 @@ class GeSpeakWindow():
         self.lbl_language = gtk.Label(_("Language"))
         self.optbar1.pack_start(self.lbl_language, expand=True, fill=True)
         self.cbox_language = gtk.combo_box_new_text()
+        active_language = 1
         i = 0
-        for language in self.gespeak.get_languages_list():
+        for language in self.gespeak.get_languages_names():
             self.cbox_language.append_text(language)
             if language == self.gespeak.get_language():
                 active_language = i
@@ -103,13 +125,13 @@ class GeSpeakWindow():
         self.button_bar = gtk.HBox()
         self.btn_stop = gtk.Button(_("Stop"))
         self.button_bar.pack_start(self.btn_stop, expand=True, fill=True)
-      
+
         self.btn_talk = gtk.Button(_("Talk"))
         self.button_bar.pack_start(self.btn_talk, expand=True, fill=True)
 
         self.btn_write = gtk.Button(_("Write to file"))
         self.button_bar.pack_start(self.btn_write, expand=True, fill=True)
-        
+
         # This VBox is just for visual effect
         self.body_vbox = gtk.VBox()
         self.body_vbox.set_border_width(4)
@@ -134,7 +156,7 @@ class GeSpeakWindow():
         # Setting window properties
         self.window.set_title("GeSpeak " + self.gespeak.version)
         self.window.set_border_width(0)
-        self.window.set_size_request(500,300)
+        self.window.set_size_request(600,300)
         self.window.set_position(gtk.WIN_POS_CENTER)
 
         # Setting window's icon
@@ -200,7 +222,7 @@ class GeSpeakWindow():
     def change_output_mod(self, mod=0, file=''):
         """
             This function is used to change GeSpeak's output.
-            
+
             Available mods are:
             0 : Normal speaking to sound device
             1 : Write output to a WAV file
@@ -308,7 +330,7 @@ class GeSpeakWindow():
             This function calls GeSpeak.stop()
         """
         self.gespeak.stop()
-    
+
     def open_file(self, widget):
         """
             this function opens a text file
@@ -343,13 +365,16 @@ class GeSpeakWindow():
         about.set_license("GPL v3 http://www.gnu.org/licenses/gpl-3.0.txt")
         about.set_website("http://gespeak.googlecode.com")
         about.set_website_label("http://gespeak.googlecode.com")
-        about.set_authors([ _('GeSpeak Team'), '- Evaldo Junior (InFog)', '- Walter Cruz'])
+        about.set_authors([ _('GeSpeak Team'), '- Evaldo Junior (InFog)'])
+        ICON_PATH = abspath(join(dirname(__file__), pardir, pardir, pardir, 'icons', 'gespeak.png'))
+        icon = gtk.gdk.pixbuf_new_from_file(ICON_PATH)
+        about.set_icon(icon)
         about.connect("response", lambda d, r: d.destroy())
         about.show_all()
 
     def close(self, widget):
         """
-           This function is called to close GeSpeak 
+           This function is called to close GeSpeak
         """
         self.gespeak.exit()
         gtk.main_quit()

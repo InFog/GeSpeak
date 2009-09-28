@@ -3,8 +3,8 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: GeSpeak 0.3\n"
-"POT-Creation-Date: 2009-03-08 18:54:17.692233\n"
+"Project-Id-Version: GeSpeak 0.4\n"
+"POT-Creation-Date: 2009-09-27 21:04:16.382653\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -13,60 +13,100 @@ msgstr ""
 "Content-Transfer-Encoding: utf-8\n"
 "Generated-By: generate_pot.py\n"
 
-#. file 'GeSpeakWindow.py', line 37
+#. file 'GeSpeakWindow.py', line 62
+msgid "Amplitude"
+msgstr ""
+
+#. file 'GeSpeakWindow.py', line 69
 msgid "Pitch"
 msgstr ""
 
-#. file 'GeSpeakWindow.py', line 44
+#. file 'GeSpeakWindow.py', line 76
 msgid "Speed"
 msgstr ""
 
-#. file 'GeSpeakWindow.py', line 51
+#. file 'GeSpeakWindow.py', line 83
 msgid "Language"
 msgstr ""
 
-#. file 'GeSpeakWindow.py', line 62
+#. file 'GeSpeakWindow.py', line 99
 msgid "Voice"
 msgstr ""
 
-#. file 'GeSpeakWindow.py', line 77
+#. file 'GeSpeakWindow.py', line 101
+msgid "Male"
+msgstr ""
+
+#. file 'GeSpeakWindow.py', line 104
+msgid "Female"
+msgstr ""
+
+#. file 'GeSpeakWindow.py', line 110
+msgid "Write output to WAV file."
+msgstr ""
+
+#. file 'GeSpeakWindow.py', line 126
 msgid "Stop"
 msgstr ""
 
-#. file 'GeSpeakWindow.py', line 80
+#. file 'GeSpeakWindow.py', line 129
 msgid "Talk"
 msgstr ""
 
-#. file 'GeSpeakWindow.py', line 116
-msgid "File"
-msgstr ""
-
-#. file 'GeSpeakWindow.py', line 117
-#. file 'GeSpeakWindow.py', line 127
-#. file 'GeSpeakWindow.py', line 128
-msgid "About"
-msgstr ""
-
-#. file 'GeSpeakWindow.py', line 119
-msgid "Open"
-msgstr ""
-
-#. file 'GeSpeakWindow.py', line 120
-msgid "Open a text file"
-msgstr ""
-
-#. file 'GeSpeakWindow.py', line 123
-msgid "Quit"
-msgstr ""
-
-#. file 'GeSpeakWindow.py', line 124
-msgid "Quit GeSpeak"
+#. file 'GeSpeakWindow.py', line 132
+msgid "Write to file"
 msgstr ""
 
 #. file 'GeSpeakWindow.py', line 184
-msgid "Select a text file to open"
+msgid "File"
 msgstr ""
 
-#. file 'GeSpeakWindow.py', line 189
+#. file 'GeSpeakWindow.py', line 185
+#. file 'GeSpeakWindow.py', line 195
+#. file 'GeSpeakWindow.py', line 196
+msgid "About"
+msgstr ""
+
+#. file 'GeSpeakWindow.py', line 187
+msgid "Open"
+msgstr ""
+
+#. file 'GeSpeakWindow.py', line 188
+msgid "Open a text file"
+msgstr ""
+
+#. file 'GeSpeakWindow.py', line 191
+msgid "Quit"
+msgstr ""
+
+#. file 'GeSpeakWindow.py', line 192
+msgid "Quit GeSpeak"
+msgstr ""
+
+#. file 'GeSpeakWindow.py', line 252
+msgid "Select a wav file to write"
+msgstr ""
+
+#. file 'GeSpeakWindow.py', line 258
+msgid "WAV files"
+msgstr ""
+
+#. file 'GeSpeakWindow.py', line 266
+msgid "The choosen file already exists, overwrite it?"
+msgstr ""
+
+#. file 'GeSpeakWindow.py', line 267
+msgid "File overwrite"
+msgstr ""
+
+#. file 'GeSpeakWindow.py', line 321
+msgid "The output was written to '%s'"
+msgstr ""
+
+#. file 'GeSpeakWindow.py', line 344
 msgid "Text files"
+msgstr ""
+
+#. file 'GeSpeakWindow.py', line 368
+msgid "GeSpeak Team"
 msgstr ""
