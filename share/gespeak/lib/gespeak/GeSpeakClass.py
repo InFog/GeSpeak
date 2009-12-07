@@ -19,7 +19,7 @@
 #       along with this program; if not, write to the Free Software
 #       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #       MA 02110-1301, USA.
-
+#
 import sys
 import os
 import commands
@@ -48,7 +48,7 @@ class GeSpeak:
         """
             This is the constructor of the GeSpeak class
         """
-        self.version = "0.4b2"
+        self.version = "0.4"
         self.espeak = "" # variable containing eSpeak's bin
         if self.pre_setup() == 0:
             self.load_prefs()
@@ -272,7 +272,8 @@ class GeSpeak:
             Make sure you have set up all parameters before calling this
             function
         """
-        if text == '==please, tell me a story==' :
+        # A little easter egg
+        if text == '==tell me a story==' :
             text = self.tell_a_story()
         speak_this = open("/tmp/speak_this", "w")
         text = str(text)

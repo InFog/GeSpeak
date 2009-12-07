@@ -11,4 +11,10 @@ Version 0.4b
     * Issue 14 and 16 solved, now GeSpeak can 'remember' some options.
     * Added an option to save output to a wav file.
     * Issue 15 solved, now languages' names are more user friendly.
-    * Added amplitude option
+    * Added amplitude option.
+
+Version 0.4
+
+    * Talk, Stop and Record buttons have images now.
+    * Now GeSpeak stops talking before close.
+    * Corrected some problems with file chooser dialog.

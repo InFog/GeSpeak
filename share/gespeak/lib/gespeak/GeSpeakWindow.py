@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+#
 #       GeSpeakWindow.py
 #
 #       This file is part of the GeSpeak project
@@ -20,6 +21,7 @@
 #       along with this program; if not, write to the Free Software
 #       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #       MA 02110-1301, USA.
+#
 import pygtk
 pygtk.require('2.0')
 import gtk
@@ -123,13 +125,13 @@ class GeSpeakWindow():
         # Ending the TextView area
         #Starting the buttons bar
         self.button_bar = gtk.HBox()
-        self.btn_stop = gtk.Button(_("Stop"))
+        self.btn_stop = gtk.Button(stock=gtk.STOCK_MEDIA_STOP)
         self.button_bar.pack_start(self.btn_stop, expand=True, fill=True)
 
-        self.btn_talk = gtk.Button(_("Talk"))
+        self.btn_talk = gtk.Button(stock=gtk.STOCK_MEDIA_PLAY)
         self.button_bar.pack_start(self.btn_talk, expand=True, fill=True)
 
-        self.btn_write = gtk.Button(_("Write to file"))
+        self.btn_write = gtk.Button(stock=gtk.STOCK_MEDIA_RECORD)
         self.button_bar.pack_start(self.btn_write, expand=True, fill=True)
 
         # This VBox is just for visual effect
@@ -182,7 +184,7 @@ class GeSpeakWindow():
         """
         menubar_entries = (
             ( "FileMenu", None, _("File")),
-            ( "Help", None, _("About")),
+            ( "Help", None, _("Help")),
             ( "Open", gtk.STOCK_OPEN,
                 _("Open"), "<control>o",
                 _("Open a text file"),
@@ -191,7 +193,7 @@ class GeSpeakWindow():
                 _("Quit"), "<control>q",
                 _("Quit GeSpeak"),
                 self.close),
-            ( "About", None,
+            ( "About", gtk.STOCK_ABOUT,
                 _("About"), "<control>a",
                 _("About"),
                 self.show_about),
@@ -252,7 +254,7 @@ class GeSpeakWindow():
             title_open_wav_file_dialog = _("Select a wav file to write")
             dialog_write_wav_file = gtk.FileChooserDialog(title=title_open_wav_file_dialog,
                 parent=self.window, action=gtk.FILE_CHOOSER_ACTION_SAVE,
-                buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK),
+                buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_SAVE, gtk.RESPONSE_OK),
                 backend=None)
             filter = gtk.FileFilter()
             filter.set_name(_("WAV files"))
@@ -263,15 +265,19 @@ class GeSpeakWindow():
                 self.wav_file = dialog_write_wav_file.get_filename()
                 # Checking if file exists...
                 if exists(self.wav_file) :
-                    exists_message = _("The choosen file already exists, overwrite it?")
-                    dialog_exists = gtk.Dialog(_("File overwrite"), self.window, 0,
-                        (gtk.STOCK_OK, gtk.RESPONSE_OK,
-                        gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL), exists_message)
+                    exists_message = gtk.Label(_("The choosen file already exists, overwrite it?"))
+                    dialog_exists = gtk.Dialog(_("File overwrite"), self.window, 0,(
+                        gtk.STOCK_OK, gtk.RESPONSE_OK,
+                        gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL))
+                    dialog_exists.vbox.pack_start(exists_message)
+                    exists_message.show()
                     response_overwrite_file = dialog_exists.run()
                     if response_overwrite_file == gtk.RESPONSE_OK :
                         self.change_output_mod(mod=1, file=self.wav_file)
                     else :
                         self.change_output_mod(mod=0)
+                        self.cbutton_wav_file.set_active(False)
+                    dialog_exists.destroy()
                 else :
                     self.change_output_mod(mod=1)
             else :
@@ -316,6 +322,12 @@ class GeSpeakWindow():
             This function is used to write the eSpeak's output to a wav file
         """
         text = self.set_all_params()
+        if os.path.isfile(self.wav_file) :
+            overwrite_dialog = gtk.Dialog(_("The file '%s' already exists\nOverwrite it?"), self, 0, (
+                gtk.STOCK_OK, gtk.RESPONSE_OK,
+                gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
+            )
+            overwrite_dialog.run()
         self.gespeak.set_wav_file(wav_file=self.wav_file)
         self.gespeak.write_wav_file(text=text)
         done_message = _("The output was written to '%s'") % self.wav_file
@@ -376,5 +388,6 @@ class GeSpeakWindow():
         """
            This function is called to close GeSpeak
         """
+        self.stop(widget)
         self.gespeak.exit()
         gtk.main_quit()

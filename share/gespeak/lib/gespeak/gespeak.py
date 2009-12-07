@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+#
 #       gespeak.py
 #
 #       This file is part of the GeSpeak project
